@@ -53,9 +53,9 @@ public class HtmlVisitor implements Visitor {
 
 	}
 
-	private final Output output;
-	private final SmartLinkResolver smartLinkResolver;
-	private final HtmlEncoder characterEncoder;
+	protected final Output output;
+	protected final SmartLinkResolver smartLinkResolver;
+	protected final HtmlEncoder characterEncoder;
 
 	public HtmlVisitor(Writer writer, SmartLinkResolver smartLinkResolver) {
 		this(writer, smartLinkResolver, false);
