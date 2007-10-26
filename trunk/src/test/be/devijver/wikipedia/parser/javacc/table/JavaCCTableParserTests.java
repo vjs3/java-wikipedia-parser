@@ -2381,4 +2381,26 @@ public class JavaCCTableParserTests extends TestCase {
 
 		Table t = parse(content);
 	}
+
+	public void testPreInTable() throws Exception {
+		String content =
+			"{|\n" +
+			"|-\n" +
+			"|<pre><nowiki>\n" +
+			"This is no wiki\n" +
+			"</pre></nowiki>\n" +
+			"|}";
+
+		Table t = parse(content);
+
+		assertEquals(1, t.getRows().length);
+		Row row = t.getRows()[0];
+
+		assertEquals(1, row.getCells().length);
+		Cell cell = row.getCells()[0];
+
+		assertEquals("<pre><nowiki>\n" +
+			"This is no wiki\n" +
+			"</pre></nowiki>", cell.getContent()[0].toString());
+	}
 }
