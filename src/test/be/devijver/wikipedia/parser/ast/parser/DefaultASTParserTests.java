@@ -29,6 +29,7 @@ public class DefaultASTParserTests extends TestCase {
         visitor.startDocument();
         visitor.startLiteral();
         visitor.handleString("This is a literal");
+        visitor.endOfLiteralLine();
         visitor.endLiteral();
         visitor.endDocument();
 
@@ -829,9 +830,13 @@ public class DefaultASTParserTests extends TestCase {
         visitor.startDocument();
         visitor.startLiteral();
         visitor.handleString("public class Test");
+        visitor.endOfLiteralLine();
         visitor.handleString("{");
+        visitor.endOfLiteralLine();
         visitor.handleString("   super();");
+        visitor.endOfLiteralLine();
         visitor.handleString("}");
+        visitor.endOfLiteralLine();
         visitor.endLiteral();
         visitor.endDocument();
 
@@ -860,18 +865,26 @@ public class DefaultASTParserTests extends TestCase {
         visitor.startDocument();
         visitor.startLiteral();
         visitor.handleString("public class Test");
+        visitor.endOfLiteralLine();
         visitor.handleString("{");
+        visitor.endOfLiteralLine();
         visitor.handleString("   super();");
+        visitor.endOfLiteralLine();
         visitor.handleString("}");
+        visitor.endOfLiteralLine();
         visitor.endLiteral();
         visitor.startParagraph();
         visitor.handleString("Now let's look at this:");
         visitor.endParagraph();
         visitor.startLiteral();
         visitor.handleString("public class Test2");
+        visitor.endOfLiteralLine();
         visitor.handleString("{");
+        visitor.endOfLiteralLine();
         visitor.handleString("   super();");
+        visitor.endOfLiteralLine();
         visitor.handleString("}");
+        visitor.endOfLiteralLine();
         visitor.endLiteral();
         visitor.endDocument();
 
@@ -1300,8 +1313,11 @@ public class DefaultASTParserTests extends TestCase {
 		visitor.handleString("public class");
 		visitor.endBold();
 		visitor.handleString(" MyClass");
+        visitor.endOfLiteralLine();
 		visitor.handleString("{");
+        visitor.endOfLiteralLine();
 		visitor.handleString("}");
+        visitor.endOfLiteralLine();
 		visitor.endLiteral();
 		visitor.startParagraph();
 		visitor.handleString("Literals must be followed by a paragraph in order to be properly terminated.");

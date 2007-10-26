@@ -140,10 +140,12 @@ public abstract class AbstractASTParser {
     public void parse(Literal content, Visitor visitor, ParseContext context) {
         visitor.startLiteral();
         parse(content.getContent(), visitor);
+        visitor.endOfLiteralLine();
         while (context.isNextContentSameType()) {
         	Literal next = (Literal) context.nextLookAhead();
         	context.next();
         	parse(next.getContent(), visitor);
+        	visitor.endOfLiteralLine();
         }
         visitor.endLiteral();
     }

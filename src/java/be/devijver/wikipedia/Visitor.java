@@ -113,4 +113,6 @@ public interface Visitor {
 	void startTableHeader(AttributeList list);
 
 	void endTableHeader();
+
+	void endOfLiteralLine();
 }
