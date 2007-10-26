@@ -99,7 +99,6 @@ public interface Visitor {
     void endHeading6();
     void endIndent();
     void endItalics();
-    void startLiteral();
     void endLiteral();
     void endNormalLinkWithCaption();
     void endOrderedList();
@@ -128,6 +127,7 @@ public interface Visitor {
     void startHeading6();
     void startIndent();
     void startItalics();
+    void startLiteral();
     void startNormalLinkWithCaption(String s);
     void startOrderedList();
     void startOrderedListItem();
@@ -142,3 +142,7 @@ public interface Visitor {
     void startUnorderedListItem();
 }
 }}}
+
+The parser comes with one implementation class for the visitor interface: `be.devijver.wikipedia.html.HtmlVisitor`. This class is responsible for generating HTML output
+
+If you wish to modify the HTML output you can extend the `be.devijver.wikipedia.html.HtmlVisitor` class. If you wish to output the parsing results in a different way you can write your own implementation of the `be.devijver.wikipedia.Visitor` interface.
