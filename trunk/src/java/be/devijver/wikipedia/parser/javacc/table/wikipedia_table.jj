@@ -312,6 +312,7 @@ private String characters() :
 			t = "<br>\n"
 		|	t = <CHARACTER>
 		|	t = <NOWIKI_CHARACTER>
+		|	t = <MULTI_CHARACTER>
 		|	t = " "
 		|	t = "\t"
 		|	t = "'"
@@ -361,6 +362,7 @@ private String charactersWithoutPipe() :
 			t = "<br>\n"
 		|	t = <CHARACTER>
 		|	t = <NOWIKI_CHARACTER>
+		|	t = <MULTI_CHARACTER>
 		|	t = " "
 		|	t = "\t"
 		|	t = "'"
@@ -409,6 +411,7 @@ private String charactersWithoutDash() :
 			t = "<br>\n"
 		|	t = <CHARACTER>
 		|	t = <NOWIKI_CHARACTER>
+		|	t = <MULTI_CHARACTER>
 		|	t = " "
 		|	t = "\t"
 		|	t = "'"
@@ -457,6 +460,7 @@ TOKEN :
 SPECIAL_TOKEN :
 {
 	< START_COMMENT : "<!--" > : COMMENT
+|	< MULTI : "<multi>" > : MULTI_LINE
 }
 
 <COMMENT> SKIP :
@@ -508,6 +512,51 @@ SPECIAL_TOKEN :
 		| "\n"
 	)>
 |	< END_PRE_NOWIKI : "</pre></nowiki>" > : DEFAULT
+}
+
+<MULTI_LINE> TOKEN :
+{
+	< MULTI_CHARACTER : (
+		<CHARACTER>
+		| " "
+		| "\t"
+		| "'"
+		| ","
+		| "["
+		| "]"
+		| "("
+		| ")"
+		| "{"
+		| "}"
+		| "."
+		| "?"
+		| "!"
+		| "/"
+		| "\\"
+		| "+"
+		| "|"
+		| "="
+		| "<"
+		| ">"
+		| "*"
+		| "$"
+		| "-"
+		| "_"
+		| ":"
+		| ";"
+		| "%"
+		| "#"
+		| "&"
+		| "\""
+		| "`"
+		| "~"
+		| "\n"
+	)>
+}
+
+<MULTI_LINE> SPECIAL_TOKEN :
+{
+	< END_MULTI: "</multi>" > : DEFAULT
 }
 
 TOKEN :

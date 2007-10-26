@@ -284,7 +284,7 @@ public abstract class AbstractASTParser {
     	if (table.getCaption() != null || table.getCaptionOptions() != null) {
     		visitor.startCaption(table.getCaptionOptions());
     		parse(
-    			parseSingleLineMarkup(new Characters(table.getCaption())),
+    			parseMarkup(new Characters(table.getCaption())),
     			visitor
     		);
     		visitor.endCaption();
@@ -310,7 +310,7 @@ public abstract class AbstractASTParser {
     	for (int i = 0; i < content.length; i++) {
     		if (content[i] instanceof Characters) {
     			parse(
-    				parseSingleLineMarkup((Characters) content[i]),
+    				parseMarkup((Characters) content[i]),
     				visitor
     			);
     		} else {
@@ -333,9 +333,15 @@ public abstract class AbstractASTParser {
         }
     }
 
-    private Content[] parseSingleLineMarkup(Characters characters) {
-    	MarkupParser parser = new MarkupParser(characters.toString());
-    	return parser.parseContentList();
+    private Content[] parseMarkup(Characters characters) {
+    	String s = characters.toString();
+    	MarkupParser parser = new MarkupParser(s);
+    	if (s.indexOf('\n') < 0) {
+    		return parser.parseContentList();
+    	} else {
+    		Document doc = parser.parseDocument();
+    		return doc.getContent();
+    	}
     }
 
     protected abstract void doInvokeParseMethod(Content content, Visitor visitor, Object context);

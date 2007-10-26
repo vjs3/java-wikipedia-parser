@@ -989,4 +989,41 @@ public class DefaultASTParserTests extends TestCase {
 			verify(visitor);
 	}
 
+    public void testTableWithMultiLine() throws Exception {
+		Document doc = parse(
+				"{|\n" +
+				"|-\n" +
+				"|<multi>\n" +
+				"This is one paragraph.\n" +
+				"This is a second paragraph.\n" +
+				"</multi>\n" +
+				"|}"
+			);
+
+		Visitor visitor = createStrictMock(Visitor.class);
+
+		visitor.startDocument();
+		visitor.startParagraph();
+		visitor.startTable((AttributeList) isNull());
+		visitor.startTableRecord((AttributeList) isNull());
+		visitor.startTableData((AttributeList) isNull());
+		visitor.startParagraph();
+		visitor.handleString("This is one paragraph.");
+		visitor.endParagraph();
+		visitor.startParagraph();
+		visitor.handleString("This is a second paragraph.");
+		visitor.endParagraph();
+		visitor.endTableData();
+		visitor.endTableRecord();
+		visitor.endTable();
+		visitor.endParagraph();
+		visitor.endDocument();
+
+		replay(visitor);
+
+		new DefaultASTParser(doc).parse(visitor);
+
+		verify(visitor);
+	}
+
 }

@@ -2403,4 +2403,27 @@ public class JavaCCTableParserTests extends TestCase {
 			"This is no wiki\n" +
 			"</pre></nowiki>", cell.getContent()[0].toString());
 	}
+
+	public void testMultiLineWiki() throws Exception {
+		String content =
+			"{|\n" +
+			"|-\n" +
+			"|<multi>\n" +
+			"This is one paragraph.\n" +
+			"This is another paragraph.\n" +
+			"</multi>\n" +
+			"|}";
+
+		Table t = parse(content);
+
+		assertEquals(1, t.getRows().length);
+		Row row = t.getRows()[0];
+
+		assertEquals(1, row.getCells().length);
+		Cell cell = row.getCells()[0];
+
+		assertEquals("\n" +
+			"This is one paragraph.\n" +
+			"This is another paragraph.\n", cell.getContent()[0].toString());
+	}
 }

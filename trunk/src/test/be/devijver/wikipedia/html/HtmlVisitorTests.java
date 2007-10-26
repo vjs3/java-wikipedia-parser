@@ -300,4 +300,18 @@ public class HtmlVisitorTests extends TestCase {
 
 		assertEquals("<div><p><table><tr><td><a href=\"http://www.google.com\"><i>Google\n</i></a></td></tr></table></p></div>", html);
 	}
+
+	public void testTableWithMultiline() throws Exception {
+		String html = parse(
+				"{|\n" +
+				"|-\n" +
+				"|<multi>\n" +
+				"This is one paragraph.\n" +
+				"This is a second paragraph.\n" +
+				"</multi>\n" +
+				"|}"
+			);
+
+		assertEquals("<div><p><table><tr><td><p>This is one paragraph.\n</p><p>This is a second paragraph.\n</p></td></tr></table></p></div>", html);
+	}
 }
