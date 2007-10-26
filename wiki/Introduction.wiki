@@ -145,4 +145,54 @@ public interface Visitor {
 
 The parser comes with one implementation class for the visitor interface: `be.devijver.wikipedia.html.HtmlVisitor`. This class is responsible for generating HTML output
 
-If you wish to modify the HTML output you can extend the `be.devijver.wikipedia.html.HtmlVisitor` class. If you wish to output the parsing results in a different way you can write your own implementation of the `be.devijver.wikipedia.Visitor` interface.
+If you wish to modify the HTML output you can extend the `be.devijver.wikipedia.html.HtmlVisitor` class and overwrite selected methods. If you wish to output the parsing results in a different way you can write your own implementation of the `be.devijver.wikipedia.Visitor` interface.
+
+As an example, let's say you want to use the <strong> and <em> tags in the HTML output instead of <b> and <i>. You extend the `be.devijver.wikipedia.html.HtmlVisitor` class as follows:
+
+{{{
+import java.io.Writer;
+import be.devijver.wikipedia.SmartLinkResolver;
+import be.devijver.wikipedia.html.HtmlVisitor;
+
+
+public class MyHtmlVisitor extends HtmlVisitor {
+   public MyHtmlVisitor(Writer out, SmartLinkResolver resolver) {
+      super(writer, resolver);
+   }
+
+   public void startBold() {
+      output.append("<strong>");
+   }
+
+   public void endBold() {
+      output.append("</strong>");
+   }
+
+   public void startItalics() {
+      output.append("<em>");
+   }
+
+   public void endItalics() {
+      output.append("</em>");
+   }
+}
+}}}
+
+Next you can you pass your visitor object to the `withVisitor()` method on `be.devijver.wikipedia.Parser`:
+
+{{{
+String wikiNotation = "'''Bold''' and ''italics''.";
+
+java.io.StringWriter writer = new StringWriter();
+be.devijver.wikipedia.Visitor visitor = new MyHtmlVisitor(writer, null);
+be.devijver.wikipedia.Parser.withVisitor(wikiNotation, visitor);
+writer.flush();
+}}}
+
+The generated HTML will look like this:
+
+{{{
+<div>
+<p><strong>Bold</strong> and <em>italics</em>.</p>
+</div>
+}}}
