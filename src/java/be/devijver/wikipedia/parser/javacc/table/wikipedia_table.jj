@@ -511,7 +511,7 @@ SPECIAL_TOKEN :
 		| "~"
 		| "\n"
 	)>
-|	< END_PRE_NOWIKI : "</pre></nowiki>" > : DEFAULT
+|	< END_PRE_NOWIKI : "</nowiki></pre>" > : DEFAULT
 }
 
 <MULTI_LINE> TOKEN :

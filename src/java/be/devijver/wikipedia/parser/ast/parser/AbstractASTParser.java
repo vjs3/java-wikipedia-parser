@@ -1,7 +1,9 @@
 package be.devijver.wikipedia.parser.ast.parser;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import be.devijver.wikipedia.Visitor;
@@ -129,8 +131,8 @@ public abstract class AbstractASTParser {
 
     public void parse(Content[] content, Visitor visitor) {
         ParseContext newParseContext = new ParseContext(content);
-        for (int i = 0; i < content.length; i++) {
-            invokeParseMethod(content[i], visitor, newParseContext);
+        while (newParseContext.hasCurrent()) {
+            invokeParseMethod(newParseContext.current(), visitor, newParseContext);
             newParseContext.next();
         }
     }
@@ -146,7 +148,13 @@ public abstract class AbstractASTParser {
         visitor.endLiteral();
     }
 
-    public void parse(Pre content, Visitor visitor, ParseContext context) {
+    public void parse(Paragraph content, Visitor visitor, ParseContext context) {
+	    visitor.startParagraph();
+	    parse(content.getContent(), visitor);
+	    visitor.endParagraph();
+	}
+
+	public void parse(Pre content, Visitor visitor, ParseContext context) {
     	visitor.startPre();
     	parse(content.getNowiki(), visitor, context);
     	visitor.endPre();
@@ -154,12 +162,6 @@ public abstract class AbstractASTParser {
 
     public void parse(Characters content, Visitor visitor, ParseContext context) {
         visitor.handleString(content.toString());
-    }
-
-    public void parse(Paragraph content, Visitor visitor, ParseContext context) {
-        visitor.startParagraph();
-        parse(content.getContent(), visitor);
-        visitor.endParagraph();
     }
 
     public void parse(UnorderedListItem content, Visitor visitor, ParseContext context) {
@@ -174,12 +176,20 @@ public abstract class AbstractASTParser {
             invokeParseMethod(content.getContent(), visitor, new ParseContext(new Content[] {}));
         }
         Content next = context.nextLookAhead();
-        if (next != null && next instanceof SingleContentHolder) {
+        List contentList = new ArrayList();
+        while (next != null && next instanceof SingleContentHolder) {
             SingleContentHolder nextContentHolder = (SingleContentHolder) next;
             if (nextContentHolder.getContent() instanceof UnorderedListItem || nextContentHolder.getContent() instanceof OrderedListItem) {
-                invokeParseMethod(nextContentHolder.getContent(), visitor, new ParseContext(new Content[] { nextContentHolder.getContent() }));
+            	contentList.add(nextContentHolder.getContent());
                 context.next();
+                next = context.nextLookAhead();
+            } else {
+            	next = null;
             }
+        }
+        if (!contentList.isEmpty()) {
+	        Content[] contentArray = (Content[]) contentList.toArray(new Content[contentList.size()]);
+	        parse(contentArray, visitor);
         }
         visitor.endUnorderedListItem();
         if (!context.isNextContentSameType()) {
@@ -199,15 +209,23 @@ public abstract class AbstractASTParser {
             invokeParseMethod(content.getContent(), visitor, new ParseContext(new Content[] {}));
         }
         Content next = context.nextLookAhead();
-        if (next != null && next instanceof SingleContentHolder) {
+        List contentList = new ArrayList();
+        while (next != null && next instanceof SingleContentHolder) {
             SingleContentHolder nextContentHolder = (SingleContentHolder) next;
             if (nextContentHolder.getContent() instanceof UnorderedListItem || nextContentHolder.getContent() instanceof OrderedListItem) {
-                invokeParseMethod(nextContentHolder.getContent(), visitor, new ParseContext(new Content[] { nextContentHolder.getContent() }));
+            	contentList.add(nextContentHolder.getContent());
                 context.next();
+                next = context.nextLookAhead();
+            } else {
+            	next = null;
             }
         }
+        if (!contentList.isEmpty()) {
+		    Content[] contentArray = (Content[]) contentList.toArray(new Content[contentList.size()]);
+		    parse(contentArray, visitor);
+        }
         visitor.endOrderedListItem();
-        if (!context.isNextContentSameType()) {
+        if (!context.isNextContentSameType(content)) {
             visitor.endOrderedList();
         }
     }
@@ -357,7 +375,11 @@ public abstract class AbstractASTParser {
         }
 
         protected final Content current() {
-            return this.content[position];
+        	if (hasCurrent()) {
+        		return this.content[position];
+        	} else {
+        		return null;
+        	}
         }
 
         protected final void next() {
@@ -372,6 +394,10 @@ public abstract class AbstractASTParser {
             }
         }
 
+        public final boolean hasNext() {
+        	return position + 1 < this.content.length;
+        }
+
         public final boolean hasCurrent() {
             return position < this.content.length;
         }
@@ -381,6 +407,13 @@ public abstract class AbstractASTParser {
                 return false;
             }
             return content[position + 1].getClass() == current().getClass();
+        }
+
+        public final boolean isNextContentSameType(Content content) {
+            if (position + 1 >= this.content.length) {
+                return false;
+            }
+            return this.content[position + 1].getClass() == content.getClass();
         }
 
         public final boolean isPreviousContentSameType() {

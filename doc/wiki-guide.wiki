@@ -1,0 +1,166 @@
+== Wiki notation guide ==
+
+=== Introduction ===
+
+Welcome to the wiki notation guide for the Java wikipedia parser.
+
+The wikipedia parsers supports a subset of the wikipedia wiki notation. The parser's intended use is to add wiki-notation support in applications. It is able to parse some wiki pages from wikipedia but certainly not all of them.
+
+=== Wiki notation ===
+
+==== Typeface modifiers ====
+
+The following typeface modifiers are supported:
+
+{| border="1"
+|+ Typeface modifiers
+|-
+! &nbsp;Wiki notation&nbsp; !! &nbsp;Result in HTML&nbsp;
+|-
+| align="center"|<pre><nowiki>''Italics''</nowiki></pre>
+| align="center"|''Italics''
+|-
+| align="center"|<pre><nowiki>'''Bold'''</nowiki></pre>
+| align="center"|'''Bold'''
+|-
+| align="center"|<pre><nowiki>'''''Bold and italics'''''</nowiki></pre>
+| align="center"|'''''Bold and italics'''''
+|-
+| align="center"|<pre><nowiki>'''''Italics'' and bold'''</nowiki></pre>
+| align="center"|'''''Italics'' and bold'''
+|}
+
+The type modifiers can be used anywhere, except in table attributes. They will be ignored inside the <nowiki><nowiki></nowiki> tag.
+
+==== Lists ====
+
+The wikipedia parsers supports ordered and unordered lists. They can be combined in any way and to an endless depth. List items start with either the # or * character at the start of the line.
+
+===== Ordered lists =====
+
+{| border="1"
+|-
+! &nbsp;Wiki notation&nbsp; !! &nbsp;Result in HTML&nbsp;
+|-
+|<pre><nowiki># Apple
+# Lemon
+# Orange</nowiki></pre>
+|<multi># Apple
+# Lemon
+# Orange</multi>
+|-
+|<pre><nowiki>#Fruits
+##Apple
+##Lemon
+##Orange
+#Vegetables
+##Garlic
+##Onion
+##Leech</nowiki></pre>
+|<multi>#Fruits
+##Apple
+##Lemon
+##Orange
+#Vegetables
+##Garlic
+##Onion
+##Leech</multi>
+|}
+
+===== Unordered lists =====
+
+{| border="1"
+|-
+! &nbsp;Wiki notation&nbsp; !! &nbsp;Result in HTML&nbsp;
+|-
+|<pre><nowiki>* Apple
+* Lemon
+* Orange</nowiki></pre>
+|<multi>* Apple
+* Lemon
+* Orange</multi>
+|-
+|<pre><nowiki>*Fruits
+**Apple
+**Lemon
+**Orange
+*Vegetables
+**Garlic
+**Onion
+**Leech</nowiki></pre>
+|<multi>*Fruits
+**Apple
+**Lemon
+**Orange
+*Vegetables
+**Garlic
+**Onion
+**Leech</multi>
+|}
+
+===== Combined ordered and unordered lists =====
+
+{| border="1"
+|-
+! &nbsp;Wiki notation&nbsp; !! &nbsp;Result in HTML&nbsp;
+|-
+|<pre><nowiki>#Fruits
+#*Apple
+#*Lemon
+#*Orange
+#Vegetables
+#*Garlic
+#*Onion
+#*Leech</nowiki></pre>
+|<multi>#Fruits
+#*Apple
+#*Lemon
+#*Orange
+#Vegetables
+#*Garlic
+#*Onion
+#*Leech</multi>
+|-
+|<pre><nowiki>*Fruits
+*#Apple
+*#Lemon
+*#Orange
+*Vegetables
+*#Garlic
+*#Onion
+*#Leech</nowiki></pre>
+|<multi>*Fruits
+*#Apple
+*#Lemon
+*#Orange
+*Vegetables
+*#Garlic
+*#Onion
+*#Leech</multi>
+|}
+
+==== Literals ====
+
+The wikipedia parser supports two types of literals:
+
+* Literals with wiki notations
+* Literals without wiki notations
+
+===== Literals with wiki notations =====
+
+If these literals have wiki notations they will be parsed by the wikipedia parser. They start with two space characters at the start of the line.
+
+'''Wiki notation example''':
+
+<pre><nowiki>
+ '''public class''' MyClass
+ {
+ }
+</nowiki></pre>
+
+'''Result in HTML''':
+
+ '''public class''' MyClass
+ {
+ }
+

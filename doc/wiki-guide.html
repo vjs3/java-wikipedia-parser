@@ -1,0 +1,42 @@
+<div><h1> Wiki notation guide </h1><h2> Introduction </h2><p>Welcome to the wiki notation guide for the Java wikipedia parser.</p><p>The wikipedia parsers supports a subset of the wikipedia wiki notation. The parser's intended use is to add wiki-notation support in applications. It is able to parse some wiki pages from wikipedia but certainly not all of them.</p><h2> Wiki notation </h2><h3> Typeface modifiers </h3><p>The following typeface modifiers are supported:</p><p><table border="1"><caption> Typeface modifiers</caption><tr><th> &nbsp;Wiki notation&nbsp; </th><th> &nbsp;Result in HTML&nbsp;</th></tr><tr><td align="center"><pre>''Italics''</pre></td><td align="center"><i>Italics</i></td></tr><tr><td align="center"><pre>'''Bold'''</pre></td><td align="center"><b>Bold</b></td></tr><tr><td align="center"><pre>'''''Bold and italics'''''</pre></td><td align="center"><b><i>Bold and italics</i></b></td></tr><tr><td align="center"><pre>'''''Italics'' and bold'''</pre></td><td align="center"><b><i>Italics</i> and bold</b></td></tr></table></p><p>The type modifiers can be used anywhere, except in table attributes. They will be ignored inside the &lt;nowiki&gt; tag.</p><h3> Lists </h3><p>The wikipedia parsers supports ordered and unordered lists. They can be combined in any way and to an endless depth. List items start with either the # or * character at the start of the line.</p><h4> Ordered lists </h4><p><table border="1"><tr><th> &nbsp;Wiki notation&nbsp; </th><th> &nbsp;Result in HTML&nbsp;</th></tr><tr><td><p><pre># Apple
+# Lemon
+# Orange</pre></p></td><td><ol><li>Apple</li><li>Lemon</li><li>Orange</li></ol></td></tr><tr><td><p><pre>#Fruits
+##Apple
+##Lemon
+##Orange
+#Vegetables
+##Garlic
+##Onion
+##Leech</pre></p></td><td><ol><li>Fruits<ol><li>Apple</li><li>Lemon</li><li>Orange</li></ol></li><li>Vegetables<ol><li>Garlic</li><li>Onion</li><li>Leech</li></ol></li></ol></td></tr></table></p><h4> Unordered lists </h4><p><table border="1"><tr><th> &nbsp;Wiki notation&nbsp; </th><th> &nbsp;Result in HTML&nbsp;</th></tr><tr><td><p><pre>* Apple
+* Lemon
+* Orange</pre></p></td><td><ul><li>Apple</li><li>Lemon</li><li>Orange</li></ul></td></tr><tr><td><p><pre>*Fruits
+**Apple
+**Lemon
+**Orange
+*Vegetables
+**Garlic
+**Onion
+**Leech</pre></p></td><td><ul><li>Fruits<ul><li>Apple</li><li>Lemon</li><li>Orange</li></ul></li><li>Vegetables<ul><li>Garlic</li><li>Onion</li><li>Leech</li></ul></li></ul></td></tr></table></p><h4> Combined ordered and unordered lists </h4><p><table border="1"><tr><th> &nbsp;Wiki notation&nbsp; </th><th> &nbsp;Result in HTML&nbsp;</th></tr><tr><td><p><pre>#Fruits
+#*Apple
+#*Lemon
+#*Orange
+#Vegetables
+#*Garlic
+#*Onion
+#*Leech</pre></p></td><td><ol><li>Fruits<ul><li>Apple</li><li>Lemon</li><li>Orange</li></ul></li><li>Vegetables<ul><li>Garlic</li><li>Onion</li><li>Leech</li></ul></li></ol></td></tr><tr><td><p><pre>*Fruits
+*#Apple
+*#Lemon
+*#Orange
+*Vegetables
+*#Garlic
+*#Onion
+*#Leech</pre></p></td><td><ul><li>Fruits<ol><li>Apple</li><li>Lemon</li><li>Orange</li></ol></li><li>Vegetables<ol><li>Garlic</li><li>Onion</li><li>Leech</li></ol></li></ul></td></tr></table></p><h3> Literals </h3><p>The wikipedia parser supports two types of literals:</p><ul><li>Literals with wiki notations</li><li>Literals without wiki notations</li></ul><h4> Literals with wiki notations </h4><p>If these literals have wiki notations they will be parsed by the wikipedia parser. They start with two space characters at the start of the line.</p><p><b>Wiki notation example</b>:</p><p><pre>
+ '''public class''' MyClass
+ {
+ }
+</pre></p><p><b>Result in HTML</b>:</p><pre>
+<b>public class
+</b> MyClass
+{
+}
+</pre></div>

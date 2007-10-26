@@ -26,133 +26,133 @@ public class HtmlVisitorTests extends TestCase {
 	public void testParagraph() {
 		String html = parse("This is a test");
 
-		assertEquals("<div><p>This is a test\n</p></div>", html);
+		assertEquals("<div><p>This is a test</p></div>", html);
 	}
 
 	public void testTwoParagraphs() {
 		String html = parse("This is a paragraph.\n\nThis is another paragraph.");
 
-		assertEquals("<div><p>This is a paragraph.\n</p><p>This is another paragraph.\n</p></div>", html);
+		assertEquals("<div><p>This is a paragraph.</p><p>This is another paragraph.</p></div>", html);
 	}
 
 	public void testItalics() {
 		String html = parse("This ''is in'' italics.");
 
-		assertEquals("<div><p>This \n<i>is in\n</i> italics.\n</p></div>", html);
+		assertEquals("<div><p>This <i>is in</i> italics.</p></div>", html);
 	}
 
 	public void testBold() {
 		String html = parse("This '''is in''' bold.");
 
-		assertEquals("<div><p>This \n<b>is in\n</b> bold.\n</p></div>", html);
+		assertEquals("<div><p>This <b>is in</b> bold.</p></div>", html);
 	}
 
 	public void testBoldAndItalics() {
 		String html = parse("This '''''is in'' bold and italics'''.");
 
-		assertEquals("<div><p>This \n<b><i>is in\n</i> bold and italics\n</b>.\n</p></div>", html);
+		assertEquals("<div><p>This <b><i>is in</i> bold and italics</b>.</p></div>", html);
 	}
 
 	public void testHeading1() {
 		String html = parse("==Heading 1==");
 
-		assertEquals("<div><h1>Heading 1\n</h1></div>", html);
+		assertEquals("<div><h1>Heading 1</h1></div>", html);
 	}
 
 	public void testHeading2() {
 		String html = parse("===Heading 2===");
 
-		assertEquals("<div><h2>Heading 2\n</h2></div>", html);
+		assertEquals("<div><h2>Heading 2</h2></div>", html);
 	}
 
 	public void testHeading3() {
 		String html = parse("====Heading 3====");
 
-		assertEquals("<div><h3>Heading 3\n</h3></div>", html);
+		assertEquals("<div><h3>Heading 3</h3></div>", html);
 	}
 
 	public void testHeading4() {
 		String html = parse("=====Heading 4=====");
 
-		assertEquals("<div><h4>Heading 4\n</h4></div>", html);
+		assertEquals("<div><h4>Heading 4</h4></div>", html);
 	}
 
 	public void testHeading5() {
 		String html = parse("======Heading 5======");
 
-		assertEquals("<div><h5>Heading 5\n</h5></div>", html);
+		assertEquals("<div><h5>Heading 5</h5></div>", html);
 	}
 
 	public void testHeading6() {
 		String html = parse("=======Heading 6=======");
 
-		assertEquals("<div><h6>Heading 6\n</h6></div>", html);
+		assertEquals("<div><h6>Heading 6</h6></div>", html);
 	}
 
 	public void testOrderedListWithOneItem() {
 		String html = parse("# Test");
 
-		assertEquals("<div><ol><li>Test\n</li></ol></div>", html);
+		assertEquals("<div><ol><li>Test</li></ol></div>", html);
 	}
 
 	public void testOrderedListWithTwoItems() {
 		String html = parse("# Test1\n#Test2");
 
-		assertEquals("<div><ol><li>Test1\n</li><li>Test2\n</li></ol></div>", html);
+		assertEquals("<div><ol><li>Test1</li><li>Test2</li></ol></div>", html);
 	}
 
 	public void testUnorderedListWithOneItem() {
 		String html = parse("* Test");
 
-		assertEquals("<div><ul><li>Test\n</li></ul></div>", html);
+		assertEquals("<div><ul><li>Test</li></ul></div>", html);
 	}
 
 	public void testUnorderedListWithTwoItems() {
 		String html = parse("* Test1\n* Test2");
 
-		assertEquals("<div><ul><li>Test1\n</li><li>Test2\n</li></ul></div>", html);
+		assertEquals("<div><ul><li>Test1</li><li>Test2</li></ul></div>", html);
 	}
 
 	public void testOrderedListWithNestedOrderedList() {
 		String html = parse("# Test1\n## Test2");
 
-		assertEquals("<div><ol><li>Test1\n<ol><li>Test2\n</li></ol></li></ol></div>", html);
+		assertEquals("<div><ol><li>Test1<ol><li>Test2</li></ol></li></ol></div>", html);
 	}
 
 	public void testUnorderedListWithNestUnorderedList() {
 		String html = parse("* Test1\n** Test2");
 
-		assertEquals("<div><ul><li>Test1\n<ul><li>Test2\n</li></ul></li></ul></div>", html);
+		assertEquals("<div><ul><li>Test1<ul><li>Test2</li></ul></li></ul></div>", html);
 	}
 
 	public void testOrderedListWithNestedUnorderedList() {
 		String html = parse("# Test1\n#* Test2");
 
-		assertEquals("<div><ol><li>Test1\n<ul><li>Test2\n</li></ul></li></ol></div>", html);
+		assertEquals("<div><ol><li>Test1<ul><li>Test2</li></ul></li></ol></div>", html);
 	}
 
 	public void testUnorderedListWithNestedOrderedList() {
 		String html = parse("* Test1\n*# Test2");
 
-		assertEquals("<div><ul><li>Test1\n<ol><li>Test2\n</li></ol></li></ul></div>", html);
+		assertEquals("<div><ul><li>Test1<ol><li>Test2</li></ol></li></ul></div>", html);
 	}
 
 	public void testOneIndent() {
 		String html = parse(":One indent");
 
-		assertEquals("<div><blockquote>One indent\n</blockquote></div>", html);
+		assertEquals("<div><blockquote>One indent</blockquote></div>", html);
 	}
 
 	public void testTwoIndents() {
 		String html = parse("::Two indents");
 
-		assertEquals("<div><blockquote><blockquote>Two indents\n</blockquote></blockquote></div>", html);
+		assertEquals("<div><blockquote><blockquote>Two indents</blockquote></blockquote></div>", html);
 	}
 
 	public void testOneIndentAndTwoIndents() {
 		String html = parse(":One indent\n::Two indents");
 
-		assertEquals("<div><blockquote>One indent\n</blockquote><blockquote><blockquote>Two indents\n</blockquote></blockquote></div>", html);
+		assertEquals("<div><blockquote>One indent</blockquote><blockquote><blockquote>Two indents</blockquote></blockquote></div>", html);
 	}
 
 	public void testOneLineLiteral() {
@@ -170,7 +170,7 @@ public class HtmlVisitorTests extends TestCase {
 	public void testNormalLink() {
 		String html = parse("[http://www.google.com Google]");
 
-		assertEquals("<div><p><a href=\"http://www.google.com\">Google\n</a></p></div>", html);
+		assertEquals("<div><p><a href=\"http://www.google.com\">Google</a></p></div>", html);
 	}
 
 	public void testSmartLinkWithoutSmartLinkResolver() {
@@ -193,13 +193,13 @@ public class HtmlVisitorTests extends TestCase {
 
 		verify(smartLinkResolver);
 
-		assertEquals("<div><p><a href=\"http://en.wikipedia.org\">smart link\n</a></p></div>", html);
+		assertEquals("<div><p><a href=\"http://en.wikipedia.org\">smart link</a></p></div>", html);
 	}
 
 	public void testParagraphWithCharactersToBeEscaped() {
 		String html = parse("& < > é à è");
 
-		assertEquals("<div><p>&amp; &lt; &gt; &eacute; &agrave; &egrave;\n</p></div>", html);
+		assertEquals("<div><p>&amp; &lt; &gt; &eacute; &agrave; &egrave;</p></div>", html);
 	}
 
 	public void testNormalLinkWithoutCaption() throws Exception {
@@ -227,13 +227,13 @@ public class HtmlVisitorTests extends TestCase {
 	public void testNowiki() throws Exception {
 		String html = parse("This is a paragraph with <nowiki>''nowiki''\n'''nowiki'''</nowiki>..");
 
-		assertEquals("<div><p>This is a paragraph with \n''nowiki''\n'''nowiki'''..\n</p></div>", html);
+		assertEquals("<div><p>This is a paragraph with ''nowiki''\n'''nowiki'''..</p></div>", html);
 	}
 
 	public void testPre() throws Exception {
 		String html = parse("<pre><nowiki>This is no wiki</nowiki></pre>");
 
-		assertEquals("<div><p><pre>\nThis is no wiki\n</pre></p></div>", html);
+		assertEquals("<div><p><pre>This is no wiki</pre></p></div>", html);
 	}
 
 	public void testTable1() throws Exception {
@@ -249,7 +249,7 @@ public class HtmlVisitorTests extends TestCase {
 				"|}"
 			);
 
-		assertEquals("<div><p><table><caption> This is a caption\n</caption></table></p></div>", html);
+		assertEquals("<div><p><table><caption> This is a caption</caption></table></p></div>", html);
 	}
 
 	public void testTable3() throws Exception {
@@ -260,7 +260,7 @@ public class HtmlVisitorTests extends TestCase {
 				"|}"
 			);
 
-		assertEquals("<div><p><table><tr><td>cell1\n</td></tr></table></p></div>", html);
+		assertEquals("<div><p><table><tr><td>cell1</td></tr></table></p></div>", html);
 	}
 
 	public void testTable4() throws Exception {
@@ -271,7 +271,7 @@ public class HtmlVisitorTests extends TestCase {
 				"|}"
 			);
 
-		assertEquals("<div><p><table><tr><th>cell1\n</th></tr></table></p></div>", html);
+		assertEquals("<div><p><table><tr><th>cell1</th></tr></table></p></div>", html);
 	}
 
 	public void testTable5() throws Exception {
@@ -287,7 +287,7 @@ public class HtmlVisitorTests extends TestCase {
 				"|}"
 			);
 
-		assertEquals("<div><p><table><caption> \n<i>This is italics\n</i></caption></table></p></div>", html);
+		assertEquals("<div><p><table><caption> <i>This is italics</i></caption></table></p></div>", html);
 	}
 
 	public void testTable7() throws Exception {
@@ -298,7 +298,7 @@ public class HtmlVisitorTests extends TestCase {
 				"|}"
 			);
 
-		assertEquals("<div><p><table><tr><td><a href=\"http://www.google.com\"><i>Google\n</i></a></td></tr></table></p></div>", html);
+		assertEquals("<div><p><table><tr><td><a href=\"http://www.google.com\"><i>Google</i></a></td></tr></table></p></div>", html);
 	}
 
 	public void testTableWithMultiline() throws Exception {
@@ -312,6 +312,6 @@ public class HtmlVisitorTests extends TestCase {
 				"|}"
 			);
 
-		assertEquals("<div><p><table><tr><td><p>This is one paragraph.\n</p><p>This is a second paragraph.\n</p></td></tr></table></p></div>", html);
+		assertEquals("<div><p><table><tr><td><p>This is one paragraph.</p><p>This is a second paragraph.</p></td></tr></table></p></div>", html);
 	}
 }
