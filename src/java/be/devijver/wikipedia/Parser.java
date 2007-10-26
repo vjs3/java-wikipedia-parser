@@ -32,4 +32,8 @@ public class Parser {
 		new DefaultASTParser(new MarkupParser(wikiNotation).parseDocument()).parse(visitor);
 		return sw.toString();
 	}
+
+	public void withVisitor(String wikiNotation, Visitor visitor) {
+		new DefaultASTParser(new MarkupParser(wikiNotation).parseDocument()).parse(visitor);
+	}
 }
