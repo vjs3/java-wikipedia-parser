@@ -14,6 +14,6 @@ public class Indent extends AbstractSingleContentHolder {
     }
 
     public String toString() {
-        return ": " + getContent().toString();
+        return ": " + (getContent() != null ? getContent().toString() : "");
     }
 }

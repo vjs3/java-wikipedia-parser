@@ -2,7 +2,7 @@
 
 === Introduction ===
 
-Welcome to the wiki notation guide for the Java wikipedia parser.
+Welcome to the wiki notation guide for the Java wikipedia parser. For more information on how to use the parser [http://code.google.com/p/java-wikipedia-parser/wiki/Introduction click here].
 
 The wikipedia parsers supports a subset of the wikipedia wiki notation. The parser's intended use is to add wiki-notation support in applications. It is able to parse some wiki pages from wikipedia but certainly not all of them.
 
@@ -50,21 +50,21 @@ The wikipedia parsers supports ordered and unordered lists. They can be combined
 # Orange</multi>
 |-
 |<pre><nowiki>#Fruits
-##Apple
-##Lemon
-##Orange
-#Vegetables
-##Garlic
-##Onion
-##Leech</nowiki></pre>
+## Apple
+## Lemon
+## Orange
+# Vegetables
+## Garlic
+## Onion
+## Leech</nowiki></pre>
 |<multi>#Fruits
-##Apple
-##Lemon
-##Orange
-#Vegetables
-##Garlic
-##Onion
-##Leech</multi>
+## Apple
+## Lemon
+## Orange
+# Vegetables
+## Garlic
+## Onion
+## Leech</multi>
 |}
 
 ===== Unordered lists =====
@@ -80,22 +80,22 @@ The wikipedia parsers supports ordered and unordered lists. They can be combined
 * Lemon
 * Orange</multi>
 |-
-|<pre><nowiki>*Fruits
-**Apple
-**Lemon
-**Orange
-*Vegetables
-**Garlic
-**Onion
-**Leech</nowiki></pre>
-|<multi>*Fruits
-**Apple
-**Lemon
-**Orange
-*Vegetables
-**Garlic
-**Onion
-**Leech</multi>
+|<pre><nowiki>* Fruits
+** Apple
+** Lemon
+** Orange
+* Vegetables
+** Garlic
+** Onion
+** Leech</nowiki></pre>
+|<multi>* Fruits
+** Apple
+** Lemon
+** Orange
+* Vegetables
+** Garlic
+** Onion
+** Leech</multi>
 |}
 
 ===== Combined ordered and unordered lists =====
@@ -104,39 +104,39 @@ The wikipedia parsers supports ordered and unordered lists. They can be combined
 |-
 ! &nbsp;Wiki notation&nbsp; !! &nbsp;Result in HTML&nbsp;
 |-
-|<pre><nowiki>#Fruits
-#*Apple
-#*Lemon
-#*Orange
-#Vegetables
-#*Garlic
-#*Onion
-#*Leech</nowiki></pre>
-|<multi>#Fruits
-#*Apple
-#*Lemon
-#*Orange
-#Vegetables
-#*Garlic
-#*Onion
-#*Leech</multi>
+|<pre><nowiki># Fruits
+#* Apple
+#* Lemon
+#* Orange
+# Vegetables
+#* Garlic
+#* Onion
+#* Leech</nowiki></pre>
+|<multi># Fruits
+#* Apple
+#* Lemon
+#* Orange
+# Vegetables
+#* Garlic
+#* Onion
+#* Leech</multi>
 |-
-|<pre><nowiki>*Fruits
-*#Apple
-*#Lemon
-*#Orange
-*Vegetables
-*#Garlic
-*#Onion
-*#Leech</nowiki></pre>
-|<multi>*Fruits
-*#Apple
-*#Lemon
-*#Orange
-*Vegetables
-*#Garlic
-*#Onion
-*#Leech</multi>
+|<pre><nowiki>* Fruits
+*# Apple
+*# Lemon
+*# Orange
+* Vegetables
+*# Garlic
+*# Onion
+*# Leech</nowiki></pre>
+|<multi>* Fruits
+*# Apple
+*# Lemon
+*# Orange
+* Vegetables
+*# Garlic
+*# Onion
+*# Leech</multi>
 |}
 
 ==== Literals ====
@@ -148,9 +148,9 @@ The wikipedia parser supports two types of literals:
 
 ===== Literals with wiki notations =====
 
-If these literals have wiki notations they will be parsed by the wikipedia parser. They start with two space characters at the start of the line.
+If these literals have wiki notations they will be parsed by the wikipedia parser. They start with one space character at the start of the line.
 
-'''Wiki notation example''':
+:'''Wiki notation example''':
 
 <pre><nowiki>
  '''public class''' MyClass
@@ -158,9 +158,176 @@ If these literals have wiki notations they will be parsed by the wikipedia parse
  }
 </nowiki></pre>
 
-'''Result in HTML''':
+:'''Result in HTML''':
 
  '''public class''' MyClass
  {
  }
 
+===== Literals without wiki notations =====
+
+Any wiki notations contained in these literals is ignored.
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+&lt;pre&gt;&lt;nowiki&gt;
+'''Bold''' and ''italics''
+
+* item 1
+* item 2
+&lt;/nowiki&gt;&lt;/pre&gt;
+</nowiki></pre>
+
+:'''Result in HTML''':
+
+<pre><nowiki>
+'''Bold''' and ''italics''
+
+* item 1
+* item 2
+</nowiki></pre>
+
+==== Indents ====
+
+Use the ''':''' character per level of indent at the start of the line.
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+: Indented one level
+:: Indented two levels
+</nowiki></pre>
+
+:'''Result in HTML''':
+
+: Indented one level
+:: Indented two levels
+
+==== Tables ====
+
+===== Empty table =====
+
+An empty table looks this (and won't show as HTML in the browser):
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+{| |}
+</nowiki></pre>
+
+===== HTML attributes in the table wiki notation =====
+
+The typical HTML attributes for tables can be used as follows:
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+{| border="1" |}
+</nowiki></pre>
+
+===== Basic table examples =====
+
+Here's how to add one row with one cell to a table:
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+{| border="1"
+|-
+| row 1, cell 1
+|}
+</nowiki></pre>
+
+:'''Result in HTML''':
+
+{| border="1"
+|-
+| row 1, cell 1
+|}
+
+The <nowiki>|-</nowiki> and <nowiki>|</nowiki> notations shall always be at the start of a line.
+
+Here are to ways to add one row with two cells:
+
+:'''Wiki notation example 1''':
+
+<pre><nowiki>
+{| border="1"
+|-
+| row 1, cell 1
+| row 1, cell 2
+|}
+</nowiki></pre>
+
+:'''Wiki notation example 2''':
+
+<pre><nowiki>
+{| border="1"
+|-
+| row 1, cell 1 || row 1, cell 2
+|}
+</nowiki></pre>
+
+Both example will produce an identical result:
+
+:'''Result in HTML''':
+
+{| border="1"
+|-
+| row 1, cell 1 || row 1, cell 2
+|}
+
+To add more rows just repeat the <nowiki>|-</nowiki> symbol for each row:
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+{| border="1"
+|-
+| row 1, cell 1 || row 1, cell 2
+|-
+| row 2, cell 1 || row 2, cell 2
+|}
+</nowiki></pre>
+
+:'''Result in HTML''':
+
+{| border="1"
+|-
+| row 1, cell 1 || row 1, cell 2
+|-
+| row 2, cell 1 || row 2, cell 2
+|}
+
+===== Table headers =====
+
+To mark a cell as header use the <nowiki>!</nowiki> or <nowiki>!!</nowiki> notations:
+
+:'''Wiki notation example''':
+
+<pre><nowiki>
+{| border="1"
+|-
+! Country !! Capital
+|-
+| USA || Washington DC
+|-
+| UK || London
+|-
+| France || Paris
+|}
+</nowiki></pre>
+
+:'''Result in HTML''':
+
+{| border="1"
+|-
+! Country !! Capital
+|-
+| USA || Washington DC
+|-
+| UK || London
+|-
+| France || Paris
+|}
