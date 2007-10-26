@@ -120,9 +120,11 @@ public class HtmlVisitor implements Visitor {
 		output.append("</i>");
 	}
 
+	private boolean inLiteral = false;
 	public void endLiteral() {
 		output.append("</pre>");
 		output.flush();
+		inLiteral = false;
 	}
 
 	public void endNormalLinkWithCaption() {
@@ -157,7 +159,8 @@ public class HtmlVisitor implements Visitor {
 	}
 
 	public void handleString(String s) {
-		output.append(characterEncoder.encode(s) + "\n");
+		output.append(characterEncoder.encode(s));
+		if (inLiteral) output.append("\n");
 	}
 
 	public void startBold() {
@@ -202,6 +205,7 @@ public class HtmlVisitor implements Visitor {
 
 	public void startLiteral() {
 		output.append("<pre>\n");
+		inLiteral = true;
 	}
 
 	public void startNormalLinkWithCaption(String s) {
@@ -247,7 +251,7 @@ public class HtmlVisitor implements Visitor {
 	}
 
 	public void handleNowiki(String nowiki) {
-		output.append(nowiki);
+		output.append(characterEncoder.encode(nowiki));
 	}
 
 	public void handleNormalLinkWithoutCaption(String string) {
@@ -260,11 +264,11 @@ public class HtmlVisitor implements Visitor {
 	}
 
 	public void endPre() {
-		output.append("\n</pre>");
+		output.append("</pre>");
 	}
 
 	public void startPre() {
-		output.append("<pre>\n");
+		output.append("<pre>");
 	}
 
 	public void endTable() {

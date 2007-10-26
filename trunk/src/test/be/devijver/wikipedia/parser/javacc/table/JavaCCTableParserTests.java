@@ -2388,7 +2388,7 @@ public class JavaCCTableParserTests extends TestCase {
 			"|-\n" +
 			"|<pre><nowiki>\n" +
 			"This is no wiki\n" +
-			"</pre></nowiki>\n" +
+			"</nowiki></pre>\n" +
 			"|}";
 
 		Table t = parse(content);
@@ -2401,7 +2401,7 @@ public class JavaCCTableParserTests extends TestCase {
 
 		assertEquals("<pre><nowiki>\n" +
 			"This is no wiki\n" +
-			"</pre></nowiki>", cell.getContent()[0].toString());
+			"</nowiki></pre>", cell.getContent()[0].toString());
 	}
 
 	public void testMultiLineWiki() throws Exception {

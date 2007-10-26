@@ -146,6 +146,60 @@ public class DefaultASTParserTests extends TestCase {
         verify(visitor);
     }
 
+   	public void testDeeperNestedOrderListItem() throws Exception {
+		Document doc = parse(
+				"#Fruits\n" +
+				"##Apple\n" +
+				"##Lemon\n" +
+				"##Orange\n" +
+				"#Vegetables\n" +
+				"##Garlic\n" +
+				"##Onion\n" +
+				"##Leech"
+			);
+
+		Visitor visitor = createStrictMock(Visitor.class);
+
+		visitor.startDocument();
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Fruits");
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Apple");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Lemon");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Orange");
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Vegetables");
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Garlic");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Onion");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Leech");
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endDocument();
+
+		replay(visitor);
+
+		new DefaultASTParser(doc).parse(visitor);
+
+		verify(visitor);
+	}
+
     public void testParseOrderedListItem() {
         Document doc = parse("# This is an ordered list item.");
 
@@ -1016,6 +1070,241 @@ public class DefaultASTParserTests extends TestCase {
 		visitor.endTableData();
 		visitor.endTableRecord();
 		visitor.endTable();
+		visitor.endParagraph();
+		visitor.endDocument();
+
+		replay(visitor);
+
+		new DefaultASTParser(doc).parse(visitor);
+
+		verify(visitor);
+	}
+
+    public void testTableWithNestedOrderedList() throws Exception {
+		Document doc = parse(
+				"{|\n" +
+				"|-\n" +
+				"|<multi>#Fruits\n" +
+				"##Appel\n" +
+				"##Lemon\n" +
+				"##Orange\n" +
+				"#Vegetables\n" +
+				"##Garlic\n" +
+				"##Onion\n" +
+				"##Leech</multi>\n" +
+				"|}"
+			);
+
+		Visitor visitor = createStrictMock(Visitor.class);
+
+		visitor.startDocument();
+		visitor.startParagraph();
+		visitor.startTable((AttributeList) isNull());
+		visitor.startTableRecord((AttributeList) isNull());
+		visitor.startTableData((AttributeList) isNull());
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Fruits");
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Appel");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Lemon");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Orange");
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Vegetables");
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Garlic");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Onion");
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Leech");
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endTableData();
+		visitor.endTableRecord();
+		visitor.endTable();
+		visitor.endParagraph();
+		visitor.endDocument();
+
+		replay(visitor);
+
+		new DefaultASTParser(doc).parse(visitor);
+
+		verify(visitor);
+	}
+
+    public void testTableWithNestedUnorderedList() throws Exception {
+		Document doc = parse(
+				"{|\n" +
+				"|-\n" +
+				"|<multi>*Fruits\n" +
+				"**Appel\n" +
+				"**Lemon\n" +
+				"**Orange\n" +
+				"*Vegetables\n" +
+				"**Garlic\n" +
+				"**Onion\n" +
+				"**Leech</multi>\n" +
+				"|}"
+			);
+
+		Visitor visitor = createStrictMock(Visitor.class);
+
+		visitor.startDocument();
+		visitor.startParagraph();
+		visitor.startTable((AttributeList) isNull());
+		visitor.startTableRecord((AttributeList) isNull());
+		visitor.startTableData((AttributeList) isNull());
+		visitor.startUnorderedList();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Fruits");
+		visitor.startUnorderedList();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Appel");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Lemon");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Orange");
+		visitor.endUnorderedListItem();
+		visitor.endUnorderedList();
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Vegetables");
+		visitor.startUnorderedList();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Garlic");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Onion");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Leech");
+		visitor.endUnorderedListItem();
+		visitor.endUnorderedList();
+		visitor.endUnorderedListItem();
+		visitor.endUnorderedList();
+		visitor.endTableData();
+		visitor.endTableRecord();
+		visitor.endTable();
+		visitor.endParagraph();
+		visitor.endDocument();
+
+		replay(visitor);
+
+		new DefaultASTParser(doc).parse(visitor);
+
+		verify(visitor);
+	}
+
+    public void testTableWithOrderedListAndNestedUnorderedLists() throws Exception {
+		Document doc = parse(
+				"{|\n" +
+				"|-\n" +
+				"|<multi>#Fruits\n" +
+				"#*Appel\n" +
+				"#*Lemon\n" +
+				"#*Orange\n" +
+				"#Vegetables\n" +
+				"#*Garlic\n" +
+				"#*Onion\n" +
+				"#*Leech</multi>\n" +
+				"|}"
+			);
+
+		Visitor visitor = createStrictMock(Visitor.class);
+
+		visitor.startDocument();
+		visitor.startParagraph();
+		visitor.startTable((AttributeList) isNull());
+		visitor.startTableRecord((AttributeList) isNull());
+		visitor.startTableData((AttributeList) isNull());
+		visitor.startOrderedList();
+		visitor.startOrderedListItem();
+		visitor.handleString("Fruits");
+		visitor.startUnorderedList();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Appel");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Lemon");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Orange");
+		visitor.endUnorderedListItem();
+		visitor.endUnorderedList();
+		visitor.endOrderedListItem();
+		visitor.startOrderedListItem();
+		visitor.handleString("Vegetables");
+		visitor.startUnorderedList();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Garlic");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Onion");
+		visitor.endUnorderedListItem();
+		visitor.startUnorderedListItem();
+		visitor.handleString("Leech");
+		visitor.endUnorderedListItem();
+		visitor.endUnorderedList();
+		visitor.endOrderedListItem();
+		visitor.endOrderedList();
+		visitor.endTableData();
+		visitor.endTableRecord();
+		visitor.endTable();
+		visitor.endParagraph();
+		visitor.endDocument();
+
+		replay(visitor);
+
+		new DefaultASTParser(doc).parse(visitor);
+
+		verify(visitor);
+	}
+
+    public void testLiteralsBug() throws Exception {
+		Document doc = parse(
+				"'''Result in HTML''':\n" +
+				"\n" +
+				" '''public class''' MyClass\n" +
+				" {\n" +
+				" }\n" +
+				"\n" +
+				"Literals must be followed by a paragraph in order to be properly terminated."
+			);
+
+		Visitor visitor = createStrictMock(Visitor.class);
+
+		visitor.startDocument();
+		visitor.startParagraph();
+		visitor.startBold();
+		visitor.handleString("Result in HTML");
+		visitor.endBold();
+		visitor.handleString(":");
+		visitor.endParagraph();
+		visitor.startLiteral();
+		visitor.startBold();
+		visitor.handleString("public class");
+		visitor.endBold();
+		visitor.handleString(" MyClass");
+		visitor.handleString("{");
+		visitor.handleString("}");
+		visitor.endLiteral();
+		visitor.startParagraph();
+		visitor.handleString("Literals must be followed by a paragraph in order to be properly terminated.");
 		visitor.endParagraph();
 		visitor.endDocument();
 
