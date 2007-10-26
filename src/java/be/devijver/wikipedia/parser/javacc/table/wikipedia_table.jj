@@ -311,6 +311,7 @@ private String characters() :
 		(
 			t = "<br>\n"
 		|	t = <CHARACTER>
+		|	t = <NOWIKI_CHARACTER>
 		|	t = " "
 		|	t = "\t"
 		|	t = "'"
@@ -343,6 +344,8 @@ private String characters() :
 		|	t = "\""
 		|	t = "`"
 		|	t = "~"
+		|	t = <START_PRE_NOWIKI>
+		|	t = <END_PRE_NOWIKI>
 		)
 		{
 			return t.image;
@@ -357,6 +360,7 @@ private String charactersWithoutPipe() :
 		(
 			t = "<br>\n"
 		|	t = <CHARACTER>
+		|	t = <NOWIKI_CHARACTER>
 		|	t = " "
 		|	t = "\t"
 		|	t = "'"
@@ -388,6 +392,8 @@ private String charactersWithoutPipe() :
 		|	t = "\""
 		|	t = "`"
 		|	t = "~"
+		|	t = <START_PRE_NOWIKI>
+		|	t = <END_PRE_NOWIKI>
 		)
 		{
 			return t.image;
@@ -402,6 +408,7 @@ private String charactersWithoutDash() :
 		(
 			t = "<br>\n"
 		|	t = <CHARACTER>
+		|	t = <NOWIKI_CHARACTER>
 		|	t = " "
 		|	t = "\t"
 		|	t = "'"
@@ -432,6 +439,8 @@ private String charactersWithoutDash() :
 		|	t = "\""
 		|	t = "`"
 		|	t = "~"
+		|	t = <START_PRE_NOWIKI>
+		|	t = <END_PRE_NOWIKI>
 		)
 		{
 			return t.image;
@@ -442,6 +451,7 @@ TOKEN :
 {
 	< TABLE_START : "{|" >
 |	< TABLE_END : "|}" >
+|   < START_PRE_NOWIKI : "<pre><nowiki>" > : NOWIKI
 }
 
 SPECIAL_TOKEN :
@@ -459,7 +469,46 @@ SPECIAL_TOKEN :
 
 
 
-
+<NOWIKI> TOKEN :
+{
+	< NOWIKI_CHARACTER : (
+		<CHARACTER>
+		| " "
+		| "\t"
+		| "'"
+		| ","
+		| "["
+		| "]"
+		| "("
+		| ")"
+		| "{"
+		| "}"
+		| "."
+		| "?"
+		| "!"
+		| "/"
+		| "\\"
+		| "+"
+		| "|"
+		| "="
+		| "<"
+		| ">"
+		| "*"
+		| "$"
+		| "-"
+		| "_"
+		| ":"
+		| ";"
+		| "%"
+		| "#"
+		| "&"
+		| "\""
+		| "`"
+		| "~"
+		| "\n"
+	)>
+|	< END_PRE_NOWIKI : "</pre></nowiki>" > : DEFAULT
+}
 
 TOKEN :
 {
